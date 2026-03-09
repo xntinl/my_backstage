@@ -30,6 +30,7 @@ backend:
   database:
     client: better-sqlite3
     connection: ':memory:'
+  workingDirectory: /Users/sentinel/Documents/projects/backstage01
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -76,7 +77,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -93,7 +94,18 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
-
+    - type: file
+      target: ../../examples/template/go-http-service/template.yaml
+      rules:
+        - allow: [Template]
+    # Mi componente de ejemplo
+    - type: file
+      target: ../../examples/catalog-info.yaml
+      
+    - type: file
+      target: ../../../test02/test02/catalog-info.yaml
+      rules:
+        - allow: [Component]
     ## Uncomment these lines to add more example data
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml

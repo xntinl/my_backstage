@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }}
+  description: Go HTTP service desplegado en K8s local (OrbStack)
+  tags: [go, kubernetes]
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-team

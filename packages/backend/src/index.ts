@@ -7,6 +7,22 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
+import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node';                                           
+import { createBackendModule } from '@backstage/backend-plugin-api';
+import { writeToLocalAction } from './writeToLocal';
+
+const scaffolderCustomActions = createBackendModule({
+  pluginId: 'scaffolder',
+  moduleId: 'custom-actions',
+  register(env) {
+    env.registerInit({
+      deps: { scaffolder: scaffolderActionsExtensionPoint },
+      async init({ scaffolder }) {
+        scaffolder.addActions(writeToLocalAction);
+      },
+    });
+  },
+});
 
 const backend = createBackend();
 
@@ -19,6 +35,8 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(
   import('@backstage/plugin-scaffolder-backend-module-notifications'),
 );
+
+backend.add(import('@roadiehq/scaffolder-backend-module-utils'));
 
 // techdocs plugin
 backend.add(import('@backstage/plugin-techdocs-backend'));
@@ -62,5 +80,5 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 // notifications and signals plugins
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
-
+backend.add(scaffolderCustomActions);
 backend.start();
