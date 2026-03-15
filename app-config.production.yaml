@@ -57,6 +57,12 @@ azureDevOps:
   token: ${AZURE_DEVOPS_TOKEN}
   organization: ${AZURE_DEVOPS_ORG}
 
+scaffolder:
+  defaultAuthor:
+    name: Backstage Scaffolder
+    email: scaffolder@example.com
+  defaultCommitMessage: 'feat: scaffold new service via Backstage'
+
 catalog:
   locations:
     - type: file
@@ -69,3 +75,7 @@ catalog:
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
+    - type: url
+      target: https://github.com/xntinl/template-module-go/blob/main/template.yaml
+      rules:
+        - allow: [Template]

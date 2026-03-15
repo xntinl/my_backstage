@@ -69,7 +69,10 @@ auth:
     guest: {}
 
 scaffolder:
-  # see https://backstage.io/docs/features/software-templates/configuration for software template options
+  defaultAuthor:
+    name: Backstage Scaffolder
+    email: scaffolder@example.com
+  defaultCommitMessage: 'feat: scaffold new service via Backstage'
 
 catalog:
   import:
@@ -93,8 +96,8 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
-    - type: file
-      target: ../../examples/template/go-http-service/template.yaml
+    - type: url
+      target: https://github.com/xntinl/template-module-go/blob/main/template.yaml
       rules:
         - allow: [Template]
     # Mi componente de ejemplo

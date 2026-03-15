@@ -29,6 +29,12 @@ auth:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
+scaffolder:
+  defaultAuthor:
+    name: Backstage Scaffolder
+    email: scaffolder@example.com
+  defaultCommitMessage: 'feat: scaffold new service via Backstage'
+
 catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
@@ -36,10 +42,10 @@ catalog:
     - type: file
       target: ./examples/entities.yaml
     - type: file
-      target: ./examples/template/template.yaml
-      rules:
-        - allow: [Template]
-    - type: file
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
+    - type: url
+      target: https://github.com/xntinl/platform-templates/blob/main/location.yaml
+      rules:
+        - allow: [Location, Template]

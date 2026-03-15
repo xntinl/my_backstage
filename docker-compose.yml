@@ -39,6 +39,7 @@ services:
       POSTGRES_PASSWORD: backstage_local_dev
       AUTH_GITHUB_CLIENT_ID: Ov23limeosBqj9yI8QHX
       AUTH_GITHUB_CLIENT_SECRET: 44f2985d14e97fc122c3b7025bc4c2533357908c
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
     depends_on:
       db:
         condition: service_healthy
