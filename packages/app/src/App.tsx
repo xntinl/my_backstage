@@ -30,16 +30,56 @@ import {
   OAuthRequestDialog,
   SignInPage,
 } from '@backstage/core-components';
+import {
+  githubAuthApiRef,
+  microsoftAuthApiRef,
+} from '@backstage/core-plugin-api';
 import { createApp } from '@backstage/app-defaults';
 import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
+import { UnifiedThemeProvider } from '@backstage/theme';
+import { lightTheme, darkTheme } from './themes/theme';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { NotificationsPage } from '@backstage/plugin-notifications';
 import { SignalsDisplay } from '@backstage/plugin-signals';
+import { CostInsightsPage } from '@backstage-community/plugin-cost-insights';
+import {
+  AnnouncementsPage,
+  NewAnnouncementBanner,
+} from '@backstage-community/plugin-announcements';
 
 const app = createApp({
   apis,
+  themes: [
+    {
+      id: 'light',
+      title: 'Light',
+      variant: 'light',
+      icon: <WbSunnyIcon />,
+      Provider: ({ children }) => (
+        <UnifiedThemeProvider theme={lightTheme} themeName="light">
+          <CssBaseline />
+          {children}
+        </UnifiedThemeProvider>
+      ),
+    },
+    {
+      id: 'dark',
+      title: 'Dark',
+      variant: 'dark',
+      icon: <Brightness2Icon />,
+      Provider: ({ children }) => (
+        <UnifiedThemeProvider theme={darkTheme} themeName="dark">
+          <CssBaseline />
+          {children}
+        </UnifiedThemeProvider>
+      ),
+    },
+  ],
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -58,7 +98,27 @@ const app = createApp({
     });
   },
   components: {
-    SignInPage: props => <SignInPage {...props} auto providers={['guest']} />,
+    SignInPage: props => (
+      <SignInPage
+        {...props}
+        auto
+        providers={[
+          'guest',
+          {
+            id: 'github-auth-provider',
+            title: 'GitHub',
+            message: 'Sign in using GitHub',
+            apiRef: githubAuthApiRef,
+          },
+          {
+            id: 'microsoft-auth-provider',
+            title: 'Microsoft',
+            message: 'Sign in using Microsoft',
+            apiRef: microsoftAuthApiRef,
+          },
+        ]}
+      />
+    ),
   },
 });
 
@@ -97,6 +157,8 @@ const routes = (
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/notifications" element={<NotificationsPage />} />
+    <Route path="/cost-insights" element={<CostInsightsPage />} />
+    <Route path="/announcements" element={<AnnouncementsPage />} />
   </FlatRoutes>
 );
 
@@ -105,6 +167,7 @@ export default app.createRoot(
     <AlertDisplay />
     <OAuthRequestDialog />
     <SignalsDisplay />
+    <NewAnnouncementBanner />
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>

@@ -1,0 +1,72 @@
+/*
+ * Enterprise theme BUI CSS custom property overrides.
+ * Imported AFTER styles.css — unlayered rules always win over @layer rules.
+ *
+ * Dark:  "Midnight"  — Slate navy (Linear/Vercel inspired)
+ * Light: "Clean"     — White canvas, dark sidebar, indigo accents
+ */
+
+/* ── Dark mode ─────────────────────────────────────────────────────────────── */
+[data-theme-mode='dark'] {
+  --bui-bg-app:     #0f172a;   /* slate-900 — canvas */
+  --bui-bg-popover: #1e293b;   /* slate-800 — cards/panels */
+
+  --bui-fg-primary:   #f1f5f9; /* slate-100 — primary text  */
+  --bui-fg-secondary: #cbd5e1; /* slate-300 — secondary     */
+  --bui-fg-disabled:  #64748b; /* slate-500 — disabled/muted */
+
+  --bui-border-1: #334155;     /* slate-700 — dividers  */
+  --bui-border-2: #475569;     /* slate-600 — stronger  */
+
+  --bui-scrollbar:       rgba(51, 65, 85, 0.40);
+  --bui-scrollbar-thumb: #475569;
+
+  --bui-bg-neutral-1:         #1e293b;
+  --bui-bg-neutral-1-hover:   #263345;
+  --bui-bg-neutral-1-pressed: #334155;
+  --bui-bg-neutral-2:         #263345;
+  --bui-bg-neutral-2-hover:   #334155;
+  --bui-bg-neutral-3:         #263345;
+  --bui-bg-neutral-4:         #334155;
+
+  --bui-bg-neutral-default:    #0f172a;
+  --bui-bg-neutral-hover:      #1e293b;
+  --bui-bg-neutral-pressed:    #263345;
+  --bui-bg-neutral-subtle:     #0b1120;
+  --bui-bg-neutral-strong:     #64748b;
+  --bui-bg-neutral-foreground: #f1f5f9;
+  --bui-bg-neutral-border:     #334155;
+}
+
+/* ── Light mode ────────────────────────────────────────────────────────────── */
+:root,
+[data-theme-mode='light'] {
+  --bui-bg-app:     #f8fafc;   /* slate-50  — canvas */
+  --bui-bg-popover: #ffffff;   /* white     — cards/panels */
+
+  --bui-fg-primary:   #0f172a; /* slate-900 — primary text  */
+  --bui-fg-secondary: #475569; /* slate-600 — secondary     */
+  --bui-fg-disabled:  #94a3b8; /* slate-400 — disabled/muted */
+
+  --bui-border-1: #e2e8f0;     /* slate-200 — dividers */
+  --bui-border-2: #cbd5e1;     /* slate-300 — stronger */
+
+  --bui-scrollbar:       rgba(226, 232, 240, 0.5);
+  --bui-scrollbar-thumb: #cbd5e1;
+
+  --bui-bg-neutral-1:         #ffffff;
+  --bui-bg-neutral-1-hover:   #f8fafc;
+  --bui-bg-neutral-1-pressed: #f1f5f9;
+  --bui-bg-neutral-2:         #f8fafc;
+  --bui-bg-neutral-2-hover:   #f1f5f9;
+  --bui-bg-neutral-3:         #f1f5f9;
+  --bui-bg-neutral-4:         #e2e8f0;
+
+  --bui-bg-neutral-default:    #f8fafc;
+  --bui-bg-neutral-hover:      #f1f5f9;
+  --bui-bg-neutral-pressed:    #e2e8f0;
+  --bui-bg-neutral-subtle:     #ffffff;
+  --bui-bg-neutral-strong:     #64748b;
+  --bui-bg-neutral-foreground: #ffffff;
+  --bui-bg-neutral-border:     #e2e8f0;
+}

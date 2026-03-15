@@ -54,3 +54,10 @@ e2e-test-report/
 
 # Cache
 .cache/
+
+# Test artifacts
+screenshots/
+check_dark_header.js
+visual-validation.mjs
+e2e-test-report/
+packages/app/e2e-tests/visual/**/*.png

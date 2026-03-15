@@ -1,9 +1,9 @@
 app:
-  title: Scaffolded Backstage App
+  title: Dev Portal
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: Dev Portal
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -30,8 +30,7 @@ backend:
   database:
     client: better-sqlite3
     connection: ':memory:'
-  workingDirectory: /Users/sentinel/Documents/projects/backstage01
-  # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+  workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
   github:
@@ -102,10 +101,6 @@ catalog:
     - type: file
       target: ../../examples/catalog-info.yaml
       
-    - type: file
-      target: ../../../test02/test02/catalog-info.yaml
-      rules:
-        - allow: [Component]
     ## Uncomment these lines to add more example data
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
@@ -118,6 +113,25 @@ catalog:
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+
+azureDevOps:
+  host: dev.azure.com
+  token: ${AZURE_DEVOPS_TOKEN}
+  organization: ${AZURE_DEVOPS_ORG}
+
+costInsights:
+  engineerCost: 200000
+  products:
+    computeEngine:
+      name: Compute Engine
+      icon: compute
+    cloudStorage:
+      name: Cloud Storage
+      icon: storage
+  metrics:
+    DAU:
+      name: Daily Active Users
+      default: true
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:

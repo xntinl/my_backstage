@@ -58,6 +58,22 @@ import {
   isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
 
+import {
+  EntityGithubActionsContent,
+  isGithubActionsAvailable,
+} from '@backstage-community/plugin-github-actions';
+
+import {
+  EntityAzurePipelinesContent,
+  EntityAzurePullRequestsContent,
+  isAzureDevOpsAvailable,
+} from '@backstage-community/plugin-azure-devops';
+
+import {
+  EntityAdrContent,
+  isAdrAvailable,
+} from '@backstage-community/plugin-adr';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -67,16 +83,10 @@ const techdocsContent = (
 );
 
 const cicdContent = (
-  // This is an example of how you can implement your company's logic in entity page.
-  // You can for example enforce that all components of type 'service' should use GitHubActions
   <EntitySwitch>
-    {/*
-      Here you can add support for different CI/CD services, for example
-      using @backstage-community/plugin-github-actions as follows:
-      <EntitySwitch.Case if={isGithubActionsAvailable}>
-        <EntityGithubActionsContent />
-      </EntitySwitch.Case>
-     */}
+    <EntitySwitch.Case if={isGithubActionsAvailable}>
+      <EntityGithubActionsContent />
+    </EntitySwitch.Case>
     <EntitySwitch.Case>
       <EmptyState
         title="No CI/CD available for this entity"
@@ -128,17 +138,17 @@ const overviewContent = (
   <Grid container spacing={3} alignItems="stretch">
     {entityWarningContent}
     <Grid item md={6}>
-      <EntityAboutCard variant="gridItem" />
+      <EntityAboutCard />
     </Grid>
     <Grid item md={6} xs={12}>
-      <EntityCatalogGraphCard variant="gridItem" height={400} />
+      <EntityCatalogGraphCard height={400} />
     </Grid>
 
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
     <Grid item md={8} xs={12}>
-      <EntityHasSubcomponentsCard variant="gridItem" />
+      <EntityHasSubcomponentsCard />
     </Grid>
   </Grid>
 );
@@ -151,6 +161,21 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route
+      path="/azure-devops"
+      title="Azure DevOps"
+      if={isAzureDevOpsAvailable}
+    >
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <EntityAzurePipelinesContent />
+        </Grid>
+        <Grid item xs={12}>
+          <EntityAzurePullRequestsContent />
+        </Grid>
+      </Grid>
     </EntityLayout.Route>
 
     <EntityLayout.Route
@@ -175,12 +200,16 @@ const serviceEntityPage = (
     <EntityLayout.Route path="/dependencies" title="Dependencies">
       <Grid container spacing={3} alignItems="stretch">
         <Grid item md={6}>
-          <EntityDependsOnComponentsCard variant="gridItem" />
+          <EntityDependsOnComponentsCard />
         </Grid>
         <Grid item md={6}>
-          <EntityDependsOnResourcesCard variant="gridItem" />
+          <EntityDependsOnResourcesCard />
         </Grid>
       </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/adrs" title="ADRs" if={isAdrAvailable}>
+      <EntityAdrContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/docs" title="Docs">
@@ -200,6 +229,21 @@ const websiteEntityPage = (
     </EntityLayout.Route>
 
     <EntityLayout.Route
+      path="/azure-devops"
+      title="Azure DevOps"
+      if={isAzureDevOpsAvailable}
+    >
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <EntityAzurePipelinesContent />
+        </Grid>
+        <Grid item xs={12}>
+          <EntityAzurePullRequestsContent />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route
       path="/kubernetes"
       title="Kubernetes"
       if={isKubernetesAvailable}
@@ -210,12 +254,16 @@ const websiteEntityPage = (
     <EntityLayout.Route path="/dependencies" title="Dependencies">
       <Grid container spacing={3} alignItems="stretch">
         <Grid item md={6}>
-          <EntityDependsOnComponentsCard variant="gridItem" />
+          <EntityDependsOnComponentsCard />
         </Grid>
         <Grid item md={6}>
-          <EntityDependsOnResourcesCard variant="gridItem" />
+          <EntityDependsOnResourcesCard />
         </Grid>
       </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/adrs" title="ADRs" if={isAdrAvailable}>
+      <EntityAdrContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/docs" title="Docs">
@@ -266,7 +314,7 @@ const apiPage = (
           <EntityAboutCard />
         </Grid>
         <Grid item md={6} xs={12}>
-          <EntityCatalogGraphCard variant="gridItem" height={400} />
+          <EntityCatalogGraphCard height={400} />
         </Grid>
         <Grid item md={4} xs={12}>
           <EntityLinksCard />
@@ -298,10 +346,10 @@ const userPage = (
       <Grid container spacing={3}>
         {entityWarningContent}
         <Grid item xs={12} md={6}>
-          <EntityUserProfileCard variant="gridItem" />
+          <EntityUserProfileCard />
         </Grid>
         <Grid item xs={12} md={6}>
-          <EntityOwnershipCard variant="gridItem" />
+          <EntityOwnershipCard />
         </Grid>
       </Grid>
     </EntityLayout.Route>
@@ -314,10 +362,10 @@ const groupPage = (
       <Grid container spacing={3}>
         {entityWarningContent}
         <Grid item xs={12} md={6}>
-          <EntityGroupProfileCard variant="gridItem" />
+          <EntityGroupProfileCard />
         </Grid>
         <Grid item xs={12} md={6}>
-          <EntityOwnershipCard variant="gridItem" />
+          <EntityOwnershipCard />
         </Grid>
         <Grid item xs={12} md={6}>
           <EntityMembersListCard />
@@ -336,28 +384,27 @@ const systemPage = (
       <Grid container spacing={3} alignItems="stretch">
         {entityWarningContent}
         <Grid item md={6}>
-          <EntityAboutCard variant="gridItem" />
+          <EntityAboutCard />
         </Grid>
         <Grid item md={6} xs={12}>
-          <EntityCatalogGraphCard variant="gridItem" height={400} />
+          <EntityCatalogGraphCard height={400} />
         </Grid>
         <Grid item md={4} xs={12}>
           <EntityLinksCard />
         </Grid>
         <Grid item md={8}>
-          <EntityHasComponentsCard variant="gridItem" />
+          <EntityHasComponentsCard />
         </Grid>
         <Grid item md={6}>
-          <EntityHasApisCard variant="gridItem" />
+          <EntityHasApisCard />
         </Grid>
         <Grid item md={6}>
-          <EntityHasResourcesCard variant="gridItem" />
+          <EntityHasResourcesCard />
         </Grid>
       </Grid>
     </EntityLayout.Route>
     <EntityLayout.Route path="/diagram" title="Diagram">
       <EntityCatalogGraphCard
-        variant="gridItem"
         direction={Direction.TOP_BOTTOM}
         title="System Diagram"
         height={700}
@@ -383,13 +430,13 @@ const domainPage = (
       <Grid container spacing={3} alignItems="stretch">
         {entityWarningContent}
         <Grid item md={6}>
-          <EntityAboutCard variant="gridItem" />
+          <EntityAboutCard />
         </Grid>
         <Grid item md={6} xs={12}>
-          <EntityCatalogGraphCard variant="gridItem" height={400} />
+          <EntityCatalogGraphCard height={400} />
         </Grid>
         <Grid item md={6}>
-          <EntityHasSystemsCard variant="gridItem" />
+          <EntityHasSystemsCard />
         </Grid>
       </Grid>
     </EntityLayout.Route>

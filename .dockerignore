@@ -6,3 +6,9 @@ packages/*/src
 packages/*/node_modules
 plugins
 *.local.yaml
+screenshots/
+check_dark_header.js
+visual-validation.mjs
+playwright.config.ts
+packages/app/e2e-tests/
+apuntes

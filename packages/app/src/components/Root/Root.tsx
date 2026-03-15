@@ -4,6 +4,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 import {
@@ -31,15 +33,15 @@ import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
-    width: sidebarConfig.drawerWidthClosed,
+    width: sidebarConfig.drawerWidthOpen,
     height: 3 * sidebarConfig.logoHeight,
     display: 'flex',
     flexFlow: 'row nowrap',
     alignItems: 'center',
     marginBottom: -14,
+    overflow: 'hidden',
   },
   link: {
-    width: sidebarConfig.drawerWidthClosed,
     marginLeft: 24,
   },
 });
@@ -76,6 +78,8 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
+        <SidebarItem icon={AnnouncementIcon} to="announcements" text="Announcements" />
+        <SidebarItem icon={MonetizationOnIcon} to="cost-insights" text="Cost Insights" />
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
