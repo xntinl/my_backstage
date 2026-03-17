@@ -16,13 +16,16 @@ FROM node:24-trixie-slim
 
 # Set Python interpreter for `node-gyp` to use
 ENV PYTHON=/usr/bin/python3
+ENV PIP_NO_CACHE_DIR=1
 
 # Install isolate-vm dependencies, these are needed by the @backstage/plugin-scaffolder-backend.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends python3 g++ build-essential && \
+    apt-get install -y --no-install-recommends python3 python3-pip g++ build-essential graphviz && \
     rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --break-system-packages mkdocs-techdocs-core==1.6.1
 
 # Install sqlite3 dependencies. You can skip this if you don't use sqlite3 in the image,
 # in which case you should also move better-sqlite3 to "devDependencies" in package.json.
@@ -62,6 +65,9 @@ RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid
 
 # This will include the examples, if you don't need these simply remove this line
 COPY --chown=node:node examples ./examples
+
+# Copy client catalog entities
+COPY --chown=node:node clients ./clients
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
 COPY --chown=node:node packages/backend/dist/bundle.tar.gz app-config*.yaml ./

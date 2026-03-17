@@ -58,15 +58,13 @@ proxy:
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local'
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
-    # See https://backstage.io/docs/auth/guest/provider
-    guest: {}
 
 scaffolder:
   defaultAuthor:
@@ -80,47 +78,44 @@ catalog:
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
+  providers:
+    githubOrg:
+      - id: github-org
+        githubUrl: https://github.com
+        orgs:
+          - ${GITHUB_ORG}
+        schedule:
+          frequency: { hours: 1 }
+          timeout: { minutes: 10 }
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
-      target: ../../examples/entities.yaml
-
-    # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
+      target: ../../catalog/org/groups.yaml
       rules:
-        - allow: [Template]
+        - allow: [Group, User]
 
-    # Local example organizational data
     - type: file
-      target: ../../examples/org.yaml
+      target: ../../catalog/platform/systems.yaml
       rules:
-        - allow: [User, Group]
+        - allow: [Domain, System, Component, API, Resource]
+
+    - type: file
+      target: ../../clients/clients.yaml
+      rules:
+        - allow: [Group]
+
+    - type: file
+      target: ../../clients/projects.yaml
+      rules:
+        - allow: [Domain, System, Component, API, Resource]
+
     - type: url
       target: ${PLATFORM_TEMPLATES_URL}
       rules:
         - allow: [Location, Template]
-    # Mi componente de ejemplo
-    - type: file
-      target: ../../examples/catalog-info.yaml
-      
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-
-    ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
 
-azureDevOps:
-  host: dev.azure.com
-  token: ${AZURE_DEVOPS_TOKEN}
-  organization: ${AZURE_DEVOPS_ORG}
 
 costInsights:
   engineerCost: 200000

@@ -1,0 +1,111 @@
+# Source file for acme-corp projects — edit here, then run: node scripts/build-catalog.js
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: acme-erp-finance
+  title: Acme ERP — Finance Domain
+  description: Capacidad de gestión financiera y ERP de Acme Corporation
+spec:
+  owner: group:default/acme-corp
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: acme-portal-ux
+  title: Acme Portal — UX Domain
+  description: Capacidad de autoservicio y experiencia de usuario de Acme Corporation
+spec:
+  owner: group:default/acme-corp
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: acme-erp-modernization
+  title: Acme — Modernización ERP
+  description: >
+    Proyecto de modernización y migración del sistema ERP legacy de Acme
+    Corporation a una arquitectura de microservicios cloud-native.
+  labels:
+    project-type: service
+    client: acme-corp
+  links:
+    - url: https://jira.example.com/projects/ACME-ERP
+      title: Jira Project
+      icon: dashboard
+spec:
+  owner: group:default/acme-backend-team
+  domain: domain:default/acme-erp-finance
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: acme-self-service-portal
+  title: Acme — Portal de Autoservicio
+  description: >
+    Portal web de autoservicio para empleados de Acme Corporation.
+    Incluye gestión de tickets, reportes y dashboards operativos.
+  labels:
+    project-type: website
+    client: acme-corp
+spec:
+  owner: group:default/acme-frontend-team
+  domain: domain:default/acme-portal-ux
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-erp-payments-api
+  title: Acme ERP — API de Pagos
+  description: API REST para procesamiento de pagos integrada con el ERP de Acme Corp
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/acme-backend-team
+  system: acme-erp-modernization
+  providesApis:
+    - api:default/acme-payments-openapi
+  consumesApis:
+    - api:default/shared-auth-api
+  dependsOn:
+    - resource:default/acme-postgres-prod
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-portal-frontend
+  title: Acme Portal — Frontend
+  description: Aplicación React del portal de autoservicio de Acme Corp
+spec:
+  type: website
+  lifecycle: production
+  owner: group:default/acme-frontend-team
+  system: acme-self-service-portal
+  consumesApis:
+    - api:default/acme-payments-openapi
+    - api:default/shared-auth-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: acme-payments-openapi
+  title: Acme Payments API
+  description: API REST de procesamiento de pagos del ERP de Acme
+spec:
+  type: openapi
+  owner: group:default/acme-backend-team
+  lifecycle: production
+  system: acme-erp-modernization
+  definition:
+    $text: https://github.com/example/acme-payments/blob/main/openapi.yaml
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: acme-postgres-prod
+  title: Acme PostgreSQL (Producción)
+  description: Base de datos PostgreSQL de producción del ERP de Acme Corp
+spec:
+  type: database
+  owner: group:default/acme-backend-team
+  system: acme-erp-modernization

@@ -19,8 +19,6 @@ backend:
 
 auth:
   providers:
-    guest:
-      dangerouslyAllowOutsideDevelopment: true
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
@@ -40,11 +38,25 @@ catalog:
     - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
   locations:
     - type: file
-      target: ./examples/entities.yaml
-    - type: file
-      target: ./examples/org.yaml
+      target: ./catalog/org/groups.yaml
       rules:
-        - allow: [User, Group]
+        - allow: [Group, User]
+
+    - type: file
+      target: ./catalog/platform/systems.yaml
+      rules:
+        - allow: [Domain, System, Component, API, Resource]
+
+    - type: file
+      target: ./clients/clients.yaml
+      rules:
+        - allow: [Group]
+
+    - type: file
+      target: ./clients/projects.yaml
+      rules:
+        - allow: [Domain, System, Component, API, Resource]
+
     - type: url
       target: ${PLATFORM_TEMPLATES_URL}
       rules:

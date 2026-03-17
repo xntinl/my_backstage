@@ -16,7 +16,6 @@
   "dependencies": {
     "@backstage-community/plugin-adr": "^0.22.0",
     "@backstage-community/plugin-announcements": "^2.4.0",
-    "@backstage-community/plugin-azure-devops": "^0.28.2",
     "@backstage-community/plugin-cost-insights": "^0.27.0",
     "@backstage-community/plugin-github-actions": "^0.21.1",
     "@backstage/app-defaults": "^1.7.5",
@@ -48,6 +47,8 @@
     "@backstage/ui": "^0.12.0",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
+    "@roadiehq/backstage-plugin-github-insights": "^3.4.1",
+    "luxon": "^3.0.0",
     "react": "^18.0.2",
     "react-dom": "^18.0.2",
     "react-router": "^6.30.2",

@@ -40,12 +40,14 @@ import {
   EntityCatalogGraphCard,
 } from '@backstage/plugin-catalog-graph';
 import {
+  Entity,
   RELATION_API_CONSUMED_BY,
   RELATION_API_PROVIDED_BY,
   RELATION_CONSUMES_API,
   RELATION_DEPENDENCY_OF,
   RELATION_DEPENDS_ON,
   RELATION_HAS_PART,
+  RELATION_OWNER_OF,
   RELATION_PART_OF,
   RELATION_PROVIDES_API,
 } from '@backstage/catalog-model';
@@ -63,16 +65,21 @@ import {
   isGithubActionsAvailable,
 } from '@backstage-community/plugin-github-actions';
 
-import {
-  EntityAzurePipelinesContent,
-  EntityAzurePullRequestsContent,
-  isAzureDevOpsAvailable,
-} from '@backstage-community/plugin-azure-devops';
 
 import {
   EntityAdrContent,
   isAdrAvailable,
 } from '@backstage-community/plugin-adr';
+
+import {
+  EntityGithubInsightsContent,
+  EntityGithubInsightsLanguagesCard,
+  EntityGithubInsightsReadmeCard,
+  isGithubInsightsAvailable,
+} from '@roadiehq/backstage-plugin-github-insights';
+
+const isClientGroup = (entity: Entity): boolean =>
+  entity.spec?.type === 'client';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -150,6 +157,16 @@ const overviewContent = (
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard />
     </Grid>
+    <EntitySwitch>
+      <EntitySwitch.Case if={isGithubInsightsAvailable}>
+        <Grid item md={4} xs={12}>
+          <EntityGithubInsightsLanguagesCard />
+        </Grid>
+        <Grid item md={8} xs={12}>
+          <EntityGithubInsightsReadmeCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
   </Grid>
 );
 
@@ -161,21 +178,6 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route
-      path="/azure-devops"
-      title="Azure DevOps"
-      if={isAzureDevOpsAvailable}
-    >
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <EntityAzurePipelinesContent />
-        </Grid>
-        <Grid item xs={12}>
-          <EntityAzurePullRequestsContent />
-        </Grid>
-      </Grid>
     </EntityLayout.Route>
 
     <EntityLayout.Route
@@ -215,6 +217,14 @@ const serviceEntityPage = (
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
     </EntityLayout.Route>
+
+    <EntityLayout.Route
+      path="/github-insights"
+      title="GitHub Insights"
+      if={isGithubInsightsAvailable}
+    >
+      <EntityGithubInsightsContent />
+    </EntityLayout.Route>
   </EntityLayout>
 );
 
@@ -226,21 +236,6 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route
-      path="/azure-devops"
-      title="Azure DevOps"
-      if={isAzureDevOpsAvailable}
-    >
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <EntityAzurePipelinesContent />
-        </Grid>
-        <Grid item xs={12}>
-          <EntityAzurePullRequestsContent />
-        </Grid>
-      </Grid>
     </EntityLayout.Route>
 
     <EntityLayout.Route
@@ -378,6 +373,49 @@ const groupPage = (
   </EntityLayout>
 );
 
+const clientGroupPage = (
+  <EntityLayout>
+    <EntityLayout.Route path="/" title="Overview">
+      <Grid container spacing={3}>
+        {entityWarningContent}
+        <Grid item xs={12} md={6}>
+          <EntityGroupProfileCard variant="gridItem" />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <EntityCatalogGraphCard height={400} />
+        </Grid>
+        <Grid item xs={12}>
+          <EntityOwnershipCard />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <EntityMembersListCard />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <EntityLinksCard />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/diagram" title="Diagrama">
+      <EntityCatalogGraphCard
+        direction={Direction.TOP_BOTTOM}
+        title="Proyectos y Servicios del Cliente"
+        height={700}
+        maxDepth={3}
+        kinds={['group', 'system', 'component']}
+        relations={[
+          RELATION_OWNER_OF,
+          RELATION_HAS_PART,
+        ]}
+        mergeRelations={false}
+        unidirectional={false}
+      />
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/docs" title="Docs">
+      {techdocsContent}
+    </EntityLayout.Route>
+  </EntityLayout>
+);
+
 const systemPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
@@ -421,6 +459,9 @@ const systemPage = (
         unidirectional={false}
       />
     </EntityLayout.Route>
+    <EntityLayout.Route path="/docs" title="Docs">
+      {techdocsContent}
+    </EntityLayout.Route>
   </EntityLayout>
 );
 
@@ -447,7 +488,16 @@ export const entityPage = (
   <EntitySwitch>
     <EntitySwitch.Case if={isKind('component')} children={componentPage} />
     <EntitySwitch.Case if={isKind('api')} children={apiPage} />
-    <EntitySwitch.Case if={isKind('group')} children={groupPage} />
+    <EntitySwitch.Case if={isKind('group')}>
+      <EntitySwitch>
+        <EntitySwitch.Case if={isClientGroup}>
+          {clientGroupPage}
+        </EntitySwitch.Case>
+        <EntitySwitch.Case>
+          {groupPage}
+        </EntitySwitch.Case>
+      </EntitySwitch>
+    </EntitySwitch.Case>
     <EntitySwitch.Case if={isKind('user')} children={userPage} />
     <EntitySwitch.Case if={isKind('system')} children={systemPage} />
     <EntitySwitch.Case if={isKind('domain')} children={domainPage} />

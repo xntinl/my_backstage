@@ -1,0 +1,75 @@
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: shared-auth
+  title: Shared Authentication
+  description: Capacidad de autenticación y autorización compartida entre todos los proyectos
+spec:
+  owner: group:default/platform-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: shared-observability
+  title: Shared Observability
+  description: Capacidad de observabilidad, logging y monitoreo compartida
+spec:
+  owner: group:default/platform-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: authentication-core
+  title: Authentication Core
+  description: Servicio centralizado de autenticación y gestión de identidad
+spec:
+  owner: group:default/platform-team
+  domain: domain:default/shared-auth
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: observability-platform
+  title: Observability Platform
+  description: Stack de observabilidad compartido (métricas, logs, trazas)
+spec:
+  owner: group:default/platform-team
+  domain: domain:default/shared-observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: api-gateway
+  title: API Gateway
+  description: Gateway centralizado para routing, rate limiting y seguridad de APIs
+spec:
+  owner: group:default/platform-team
+  domain: domain:default/shared-auth
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: shared-auth-service
+  title: Auth Service
+  description: Microservicio de autenticación OAuth2/OIDC
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/platform-team
+  system: authentication-core
+  providesApis:
+    - api:default/shared-auth-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: shared-auth-api
+  title: Auth API
+  description: API REST de autenticación compartida
+spec:
+  type: openapi
+  owner: group:default/platform-team
+  lifecycle: production
+  system: authentication-core
+  definition:
+    $text: https://github.com/example/auth-service/blob/main/openapi.yaml

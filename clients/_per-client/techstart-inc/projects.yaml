@@ -1,0 +1,66 @@
+# Source file for techstart-inc projects — edit here, then run: node scripts/build-catalog.js
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: techstart-ecommerce
+  title: TechStart — E-commerce Domain
+  description: Capacidad de comercio electrónico de TechStart Inc.
+spec:
+  owner: group:default/techstart-inc
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: techstart-ecommerce-platform
+  title: TechStart — Plataforma E-commerce
+  description: >
+    Desarrollo de plataforma e-commerce completa para TechStart Inc.
+    Incluye catálogo de productos, carrito, pagos e integración con logística.
+  labels:
+    project-type: website
+    client: techstart-inc
+spec:
+  owner: group:default/techstart-dev-team
+  domain: domain:default/techstart-ecommerce
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: techstart-ecommerce-api
+  title: TechStart E-commerce API
+  description: API backend de la plataforma e-commerce de TechStart
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/techstart-dev-team
+  system: techstart-ecommerce-platform
+  providesApis:
+    - api:default/techstart-ecommerce-openapi
+  consumesApis:
+    - api:default/shared-auth-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: techstart-ecommerce-openapi
+  title: TechStart E-commerce API
+  description: API REST de la plataforma e-commerce de TechStart
+spec:
+  type: openapi
+  owner: group:default/techstart-dev-team
+  lifecycle: experimental
+  system: techstart-ecommerce-platform
+  definition:
+    $text: https://github.com/example/techstart-ecommerce/blob/main/openapi.yaml
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: techstart-postgres-dev
+  title: TechStart PostgreSQL (Dev)
+  description: Base de datos PostgreSQL de desarrollo de TechStart
+spec:
+  type: database
+  owner: group:default/techstart-dev-team
+  system: techstart-ecommerce-platform

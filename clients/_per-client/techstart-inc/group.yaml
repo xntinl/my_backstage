@@ -1,0 +1,45 @@
+# Source file for techstart-inc — edit here, then run: node scripts/build-catalog.js
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: techstart-inc
+  title: TechStart Inc.
+  description: >
+    Startup de tecnología enfocada en soluciones de e-commerce.
+    Proyecto de desarrollo de plataforma digital end-to-end.
+  annotations:
+    clients.backstage.io/account-manager: xntinl
+    clients.backstage.io/tier: startup
+    clients.backstage.io/engagement-type: project
+    clients.backstage.io/start-date: "2024-06-01"
+    clients.backstage.io/contract-end: "2025-06-30"
+    clients.backstage.io/region: us-west
+  labels:
+    client-tier: startup
+    engagement-type: project
+  links:
+    - url: https://techstart.example.com
+      title: Sitio Web
+      icon: web
+spec:
+  type: client
+  parent: group:default/consultora
+  profile:
+    displayName: TechStart Inc.
+    email: tech@techstart.example.com
+  children:
+    - techstart-dev-team
+  members:
+    - xntinl
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: techstart-dev-team
+  title: TechStart Dev Team
+  description: Equipo de desarrollo de TechStart Inc.
+spec:
+  type: team
+  parent: group:default/techstart-inc
+  children: []
+  members: []

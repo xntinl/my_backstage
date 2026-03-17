@@ -1,0 +1,111 @@
+# --- acme-corp ---
+---
+# Source file for acme-corp — edit here, then run: node scripts/build-catalog.js
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-corp
+  title: Acme Corporation
+  description: >
+    Empresa líder en manufactura y transformación digital.
+    Cliente enterprise en proceso de modernización de su plataforma tecnológica.
+  annotations:
+    clients.backstage.io/account-manager: xntinl
+    clients.backstage.io/tier: enterprise
+    clients.backstage.io/engagement-type: transformation
+    clients.backstage.io/start-date: "2024-01-15"
+    clients.backstage.io/contract-end: "2025-12-31"
+    clients.backstage.io/region: us-east
+  labels:
+    client-tier: enterprise
+    engagement-type: transformation
+  links:
+    - url: https://acme.example.com
+      title: Sitio Web
+      icon: web
+    - url: https://jira.example.com/projects/ACME
+      title: Jira
+      icon: dashboard
+spec:
+  type: client
+  parent: group:default/consultora
+  profile:
+    displayName: Acme Corporation
+    email: devportal@acme.example.com
+  children:
+    - acme-backend-team
+    - acme-frontend-team
+  members:
+    - xntinl
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-backend-team
+  title: Acme Backend Team
+  description: Equipo de backend de Acme Corporation
+spec:
+  type: team
+  parent: group:default/acme-corp
+  children: []
+  members: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-frontend-team
+  title: Acme Frontend Team
+  description: Equipo de frontend de Acme Corporation
+spec:
+  type: team
+  parent: group:default/acme-corp
+  children: []
+  members: []
+---
+# --- techstart-inc ---
+---
+# Source file for techstart-inc — edit here, then run: node scripts/build-catalog.js
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: techstart-inc
+  title: TechStart Inc.
+  description: >
+    Startup de tecnología enfocada en soluciones de e-commerce.
+    Proyecto de desarrollo de plataforma digital end-to-end.
+  annotations:
+    clients.backstage.io/account-manager: xntinl
+    clients.backstage.io/tier: startup
+    clients.backstage.io/engagement-type: project
+    clients.backstage.io/start-date: "2024-06-01"
+    clients.backstage.io/contract-end: "2025-06-30"
+    clients.backstage.io/region: us-west
+  labels:
+    client-tier: startup
+    engagement-type: project
+  links:
+    - url: https://techstart.example.com
+      title: Sitio Web
+      icon: web
+spec:
+  type: client
+  parent: group:default/consultora
+  profile:
+    displayName: TechStart Inc.
+    email: tech@techstart.example.com
+  children:
+    - techstart-dev-team
+  members:
+    - xntinl
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: techstart-dev-team
+  title: TechStart Dev Team
+  description: Equipo de desarrollo de TechStart Inc.
+spec:
+  type: team
+  parent: group:default/techstart-inc
+  children: []
+  members: []

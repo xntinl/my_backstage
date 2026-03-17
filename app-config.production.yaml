@@ -22,15 +22,9 @@ auth:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
       production:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
     microsoft:
       development:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
@@ -52,10 +46,6 @@ integrations:
     - host: github.com
       token: ${GITHUB_TOKEN}
 
-azureDevOps:
-  host: dev.azure.com
-  token: ${AZURE_DEVOPS_TOKEN}
-  organization: ${AZURE_DEVOPS_ORG}
 
 scaffolder:
   defaultAuthor:
@@ -64,17 +54,29 @@ scaffolder:
   defaultCommitMessage: 'feat: scaffold new service via Backstage'
 
 catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
   locations:
     - type: file
-      target: ./examples/entities.yaml
-    - type: file
-      target: ./examples/template/template.yaml
+      target: ./catalog/org/groups.yaml
       rules:
-        - allow: [Template]
+        - allow: [Group, User]
+
     - type: file
-      target: ./examples/org.yaml
+      target: ./catalog/platform/systems.yaml
       rules:
-        - allow: [User, Group]
+        - allow: [Domain, System, Component, API, Resource]
+
+    - type: file
+      target: ./clients/clients.yaml
+      rules:
+        - allow: [Group]
+
+    - type: file
+      target: ./clients/projects.yaml
+      rules:
+        - allow: [Domain, System, Component, API, Resource]
+
     - type: url
       target: ${PLATFORM_TEMPLATES_URL}
       rules:

@@ -1,0 +1,61 @@
+# Source file for acme-corp — edit here, then run: node scripts/build-catalog.js
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-corp
+  title: Acme Corporation
+  description: >
+    Empresa líder en manufactura y transformación digital.
+    Cliente enterprise en proceso de modernización de su plataforma tecnológica.
+  annotations:
+    clients.backstage.io/account-manager: xntinl
+    clients.backstage.io/tier: enterprise
+    clients.backstage.io/engagement-type: transformation
+    clients.backstage.io/start-date: "2024-01-15"
+    clients.backstage.io/contract-end: "2025-12-31"
+    clients.backstage.io/region: us-east
+  labels:
+    client-tier: enterprise
+    engagement-type: transformation
+  links:
+    - url: https://acme.example.com
+      title: Sitio Web
+      icon: web
+    - url: https://jira.example.com/projects/ACME
+      title: Jira
+      icon: dashboard
+spec:
+  type: client
+  parent: group:default/consultora
+  profile:
+    displayName: Acme Corporation
+    email: devportal@acme.example.com
+  children:
+    - acme-backend-team
+    - acme-frontend-team
+  members:
+    - xntinl
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-backend-team
+  title: Acme Backend Team
+  description: Equipo de backend de Acme Corporation
+spec:
+  type: team
+  parent: group:default/acme-corp
+  children: []
+  members: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-frontend-team
+  title: Acme Frontend Team
+  description: Equipo de frontend de Acme Corporation
+spec:
+  type: team
+  parent: group:default/acme-corp
+  children: []
+  members: []

@@ -1,0 +1,59 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: consultora
+  title: Consultora
+  description: Organización raíz de la consultora
+spec:
+  type: organization
+  children:
+    - platform-team
+    - internal
+    - acme-corp
+    - techstart-inc
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: platform-team
+  title: Platform Team
+  description: Equipo de plataforma — administra el portal y la infraestructura compartida
+spec:
+  type: team
+  parent: group:default/consultora
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: internal
+  title: Internal
+  description: División interna de la consultora
+spec:
+  type: division
+  parent: group:default/consultora
+  children:
+    - delivery
+    - solutions-architecture
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: delivery
+  title: Delivery
+  description: Departamento de entrega de proyectos
+spec:
+  type: department
+  parent: group:default/internal
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: solutions-architecture
+  title: Solutions Architecture
+  description: Departamento de arquitectura de soluciones
+spec:
+  type: department
+  parent: group:default/internal
+  children: []

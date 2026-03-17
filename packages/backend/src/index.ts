@@ -7,6 +7,8 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
+import { consultoraPermissionModule } from './extensions/permissionModule';
+import { consultoraGithubAuthModule } from './extensions/githubAuthWithHierarchy';
 
 const backend = createBackend();
 
@@ -27,8 +29,7 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
-backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
-backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+backend.add(consultoraGithubAuthModule);
 backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 
 // catalog plugin
@@ -36,16 +37,16 @@ backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(
   import('@backstage/plugin-catalog-backend-module-scaffolder-entity-model'),
 );
+backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
 
 // permission plugin
 backend.add(import('@backstage/plugin-permission-backend'));
-// See https://backstage.io/docs/permissions/getting-started for how to create your own permission policy
-backend.add(
-  import('@backstage/plugin-permission-backend-module-allow-all-policy'),
-);
+// Política de permisos customizada para la consultora
+// Ver packages/backend/src/extensions/permissionModule.ts
+backend.add(consultoraPermissionModule);
 
 // search plugin
 backend.add(import('@backstage/plugin-search-backend'));
@@ -64,9 +65,6 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 // notifications and signals plugins
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
-
-// azure devops plugin
-backend.add(import('@backstage-community/plugin-azure-devops-backend'));
 
 // adr plugin
 backend.add(import('@backstage-community/plugin-adr-backend'));
